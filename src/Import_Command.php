@@ -92,7 +92,8 @@ class Import_Command extends WP_CLI_Command {
 	private function import_wxr( $file, $args ) {
 
 		$wp_import = new WP_Import;
-		$wp_import->processed_posts = $this->processed_posts;
+		// We clear processed files for every imported file
+		$wp_import->processed_posts = '';
 		$import_data = $wp_import->parse( $file );
 		if ( is_wp_error( $import_data ) )
 			return $import_data;
@@ -163,8 +164,7 @@ class Import_Command extends WP_CLI_Command {
 
 		$GLOBALS['wp_cli_import_current_file'] = basename( $file );
 		$wp_import->import( $file );
-		$this->processed_posts += $wp_import->processed_posts;
-
+		
 		return true;
 	}
 
